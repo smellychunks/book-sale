@@ -1,11 +1,11 @@
-# Sale Lookup: the store app container, pulled ready-made from GitHub's container registry.
+# Book Sale: the container, pulled ready-made from GitHub's container registry.
 # TrueNAS SCALE: Apps -> Discover Apps -> Custom App -> "Install via YAML" (paste this), or `docker compose up -d`.
 # Change the two things marked EDIT. Nothing else needs to be placed on TrueNAS except the data folder.
 services:
-  sale-lookup:
-    image: ghcr.io/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME:latest      # EDIT: lowercase, e.g. ghcr.io/jflaherty/sale-lookup:latest
+  book-sale:
+    image: ghcr.io/YOUR_GITHUB_USERNAME/book-sale:latest      # EDIT: your GitHub username, all lowercase
     pull_policy: always                                            # re-pulls the newest image whenever the app is (re)started
-    container_name: sale-lookup
+    container_name: book-sale
     restart: unless-stopped
     ports:
       - "127.0.0.1:8480:8080"            # host-only; Tailscale provides the HTTPS front (README step 5)
@@ -16,4 +16,4 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - /mnt/POOL/store-app/data:/data:ro                          # EDIT: the folder export_store_snapshot.py writes to
+      - /mnt/POOL/book-sale/data:/data:ro                          # EDIT: the folder export_store_snapshot.py writes to

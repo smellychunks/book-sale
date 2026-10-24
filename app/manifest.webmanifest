@@ -1,6 +1,6 @@
 {
-  "name": "Book Sale Lookup",
-  "short_name": "Sale Lookup",
+  "name": "Book Sale",
+  "short_name": "Book Sale",
   "description": "Search our library offline to check whether we already own a book.",
   "start_url": "./",
   "scope": "./",

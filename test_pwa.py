@@ -1,4 +1,4 @@
-"""End-to-end tests of the store app in a real (headless Chromium) browser: first load, offline reloads,
+"""End-to-end tests of the Book Sale app in a real (headless Chromium) browser: first load, offline reloads,
 updates, and a slow / broken / damaged connection. Needs: pip install playwright (browser already present)."""
 import hashlib, json, os, shutil, tempfile, unittest
 from pathlib import Path

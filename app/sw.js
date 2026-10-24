@@ -1,7 +1,7 @@
 /* Service worker: keeps the app itself (page, script, styles, icons) available with no connection.
  * The library data is NOT handled here: it lives in IndexedDB and is fetched by app.js, so a bad
  * connection can never serve the app a half-cached library. */
-const CACHE = 'sale-lookup-shell-v1';
+const CACHE = 'book-sale-shell-v1';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
                'icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 

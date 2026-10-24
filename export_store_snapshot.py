@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-export_store_snapshot.py -- turn a Shelf database into the two small files the store app serves.
+export_store_snapshot.py -- turn a Shelf database into the two small files Book Sale serves.
 
     snapshot.<hash>.json   every live item, ONLY the columns listed in ITEM_FIELDS below
     version.json           tiny pointer: which snapshot is current, its hash, count and date
@@ -21,7 +21,7 @@ Safe by construction:
 
 Run it:
     python export_store_snapshot.py                      (uses the config block below)
-    python export_store_snapshot.py --db /path/shelf.db --out /path/store-app/data     (cron style)
+    python export_store_snapshot.py --db /path/shelf.db --out /path/book-sale/data     (cron style)
 """
 import argparse
 import hashlib
@@ -39,7 +39,7 @@ from pathlib import Path
 # ============================================================
 SHELF_TOOLS_DIR = Path(r"S:/Books/Shelf/shelf-tools")
 SHELF_DB_PATH = SHELF_TOOLS_DIR / "backups" / "dataset" / "shelf_*.db"     # a "*" picks the newest match
-OUTPUT_DIR = SHELF_TOOLS_DIR / "store-app" / "data"                       # what the container serves at /data
+OUTPUT_DIR = SHELF_TOOLS_DIR / "book-sale" / "data"                       # what the container serves at /data
 
 # Binding is shown as its own badge, so binding tags are pulled out of the tag list.
 BINDING_TAGS = ("hardcover", "paperback", "board book", "flexibound", "spiral-bound",
@@ -192,7 +192,7 @@ def export(db_path: str, out_dir, force: bool = False, now=None) -> dict:
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--db", default=None, help="Shelf database (or a copy); a * picks the newest match")
-    ap.add_argument("--out", default=None, help="folder the store app container serves as /data")
+    ap.add_argument("--out", default=None, help="folder the Book Sale container serves as /data")
     ap.add_argument("--force", action="store_true", help="publish even if the library shrank a lot")
     a = ap.parse_args(argv)
     db = pick_db(a.db or SHELF_DB_PATH)

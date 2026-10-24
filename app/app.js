@@ -1,4 +1,4 @@
-/* Sale Lookup: offline library search for the book sale.
+/* Book Sale: offline library search for use at a book sale.
  *
  * Two independent halves:
  *   SEARCH  runs only on the copy of the library saved in this phone's IndexedDB. It never waits for the network.
@@ -30,7 +30,7 @@
   function db() {
     if (!dbPromise) {
       dbPromise = new Promise(function (resolve, reject) {
-        var r = indexedDB.open('sale-lookup', 1);
+        var r = indexedDB.open('book-sale', 1);
         r.onupgradeneeded = function () { r.result.createObjectStore('kv'); };
         r.onsuccess = function () { resolve(r.result); };
         r.onerror = function () { reject(r.error); };

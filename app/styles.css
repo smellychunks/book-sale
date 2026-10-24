@@ -1,4 +1,4 @@
-/* Store app styles. Layout: one sticky bar (status + search) over a single grouped list; one result = one two-line row with the binding badge in a fixed right-hand column. */
+/* Book Sale styles. Layout: one sticky bar (status + search) over a single grouped list; one result = one two-line row with the binding badge in a fixed right-hand column. */
 :root{
   --bg:#EEF2F5; --surface:#FFFFFF; --fg:#13202B; --muted:#5A6B7B; --faint:#8696A5; --line:#D9E0E6;
   --accent:#1F5FBF; --mark:rgba(255,196,30,.55);
