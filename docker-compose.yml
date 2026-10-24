@@ -3,7 +3,7 @@
 # Change the two things marked EDIT. Nothing else needs to be placed on TrueNAS except the data folder.
 services:
   book-sale:
-    image: ghcr.io/YOUR_GITHUB_USERNAME/book-sale:latest      # EDIT: your GitHub username, all lowercase
+    image: ghcr.io/smellychunks/book-sale:latest      # EDIT: your GitHub username, all lowercase
     pull_policy: always                                            # re-pulls the newest image whenever the app is (re)started
     container_name: book-sale
     restart: unless-stopped
@@ -17,3 +17,5 @@ services:
       - no-new-privileges:true
     volumes:
       - /mnt/POOL/book-sale/data:/data:ro                          # EDIT: the folder export_store_snapshot.py writes to
+
+
