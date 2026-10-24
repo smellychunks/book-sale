@@ -1,13 +1,14 @@
-# Sale Lookup: the store app container. Static files only; it has no database and no access to Shelf.
+# Sale Lookup: the store app container, pulled ready-made from GitHub's container registry.
 # TrueNAS SCALE: Apps -> Discover Apps -> Custom App -> "Install via YAML" (paste this), or `docker compose up -d`.
-# Replace /mnt/POOL/store-app with your dataset path (see README step 1).
+# Change the two things marked EDIT. Nothing else needs to be placed on TrueNAS except the data folder.
 services:
   sale-lookup:
-    image: nginxinc/nginx-unprivileged:alpine     # pin an exact version tag once you have chosen one
+    image: ghcr.io/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME:latest      # EDIT: lowercase, e.g. ghcr.io/jflaherty/sale-lookup:latest
+    pull_policy: always                                            # re-pulls the newest image whenever the app is (re)started
     container_name: sale-lookup
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8480:8080"                     # host-only; Tailscale provides the HTTPS front (README step 5)
+      - "127.0.0.1:8480:8080"            # host-only; Tailscale provides the HTTPS front (README step 5)
     read_only: true
     tmpfs:
       - /tmp
@@ -15,7 +16,4 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - /mnt/POOL/store-app/app:/usr/share/nginx/html:ro
-      - /mnt/POOL/store-app/data:/data:ro
-      - /mnt/POOL/store-app/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - /mnt/POOL/store-app/nginx/security-headers.inc:/etc/nginx/security-headers.inc:ro
+      - /mnt/POOL/store-app/data:/data:ro                          # EDIT: the folder export_store_snapshot.py writes to

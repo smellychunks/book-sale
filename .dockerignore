@@ -1,0 +1,9 @@
+.git
+.github
+data
+sample-data
+*.py
+test_*
+__pycache__
+*.md
+docker-compose*.yml

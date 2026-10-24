@@ -13,7 +13,7 @@ at a book sale whether you already own something and in which binding.
 |---|---|
 | `export_store_snapshot.py` | Turns a Shelf database into `snapshot.<hash>.json` + `version.json`. Stdlib only, so it runs on the TrueNAS host from cron. Only an allowlist of fields leaves Shelf (title, subtitle, authors, media type, series, barcode, binding, tags, locations): never notes, prices, borrowers, reading history or accounts. |
 | `app/` | The web app: `index.html`, `app.js` (search + sync), `styles.css`, `sw.js` (offline support), manifest and icons. |
-| `nginx/`, `docker-compose.yml` | The container: unprivileged nginx, read-only filesystem, no capabilities, serving `app/` and `data/` read-only. |
+| `Dockerfile`, `.github/`, `nginx/`, `docker-compose.yml` | The container: unprivileged nginx, read-only filesystem, no capabilities, serving `app/` and `data/` read-only. |
 | `dev_server.py` | Preview on your PC: `python dev_server.py --data <folder the exporter wrote>` then open http://localhost:8480 |
 | `test_export_store_snapshot.py`, `test_pwa.py` | Tests. `test_pwa.py` drives a real headless Chromium (offline, slow, damaged downloads). Needs `pip install playwright` and the Chromium it installs. |
 
@@ -33,6 +33,25 @@ at a book sale whether you already own something and in which binding.
 6. **On the iPhone:** open the HTTPS address in Safari once, Share, Add to Home Screen, open it from the new icon. Wait for the pill to say "Offline-ready". Then turn on airplane mode, close the app completely and reopen it: you should still be able to search. Do this the day before the sale.
 
 Not yet verified here: the nginx config and compose file were written carefully but not run (no container runtime in my environment), so step 4 is the first real test of them. The app, the exporter and the sync logic are tested.
+
+## Deploying from GitHub (no files to copy onto TrueNAS)
+The app and nginx settings are baked into a container image that GitHub builds for you, so the only thing on TrueNAS is the
+small `data` folder the exporter writes.
+
+1. **Make a repo.** On github.com create a new repository (say `sale-lookup`). Unzip this folder, and from inside it:
+   `git init`, `git add .`, `git commit -m "Sale Lookup"`, `git branch -M main`, `git remote add origin <your repo URL>`, `git push -u origin main`.
+   (`.gitignore` already keeps databases, `data/` and any `.env` out of the repo.)
+2. **Let it build.** The push starts the build (Actions tab, "Build and publish image"). When it is green the image exists at
+   `ghcr.io/<your-username>/<repo>:latest`.
+3. **Make the image pullable.** On GitHub: your profile, Packages, the new package, Package settings: either set visibility to
+   Public (it contains only the app code, no library data), or keep it private and give TrueNAS a token with `read:packages`.
+4. **Install on TrueNAS.** Apps, Custom App, Install via YAML: paste `docker-compose.yml` after editing the image name and the `data` path.
+5. **Updating later:** edit, commit, push. After the build goes green, restart the app on TrueNAS and it pulls the new image
+   (`pull_policy: always`). `docker-compose.local.yml` is the old hand-managed version, kept only as a fallback.
+
+The exporter is still a separate step (it must read your Shelf database): run it by hand against a copy for now, or from cron later.
+Not tested here: the Dockerfile and the GitHub workflow could not be run in my environment, so the first build is their first real test;
+if the Actions run fails, send me the log.
 
 ## How sync works
 **Is it automatic?** Yes, but only while the app is open. It checks for a newer library:
