@@ -1,0 +1,11 @@
+# Never commit your library or any secrets.
+data/
+sample-data/
+*.db
+*.sqlite
+*.env
+.env
+__pycache__/
+*.pyc
+snapshot.*.json
+version.json
